@@ -288,3 +288,7 @@ li {
     font-size: 3.8rem;
   }
 }
+.link{
+  color: inherit;
+  text-decoration: none;
+}
