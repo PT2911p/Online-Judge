@@ -4,7 +4,6 @@ import { ToastContainer, toast } from "react-toastify";
 import { Login } from "../services/api";
 import { useDispatch, useSelector } from "react-redux";
 import { loginUser } from "../redux/actions";
-import ReactDOM from "react-dom";
 export default function LoginPage(){
     const navigate = useNavigate();
     const [email,setEmail] = useState('');

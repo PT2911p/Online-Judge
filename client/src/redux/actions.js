@@ -1,6 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import React from "react";
-import ReactDOM from "react-dom";
 export const userSlice = createSlice({
   name: 'user',
   initialState: {

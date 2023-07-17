@@ -3,7 +3,6 @@ import { AddProblem, UploadFile, VerifyUser } from "../services/api";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../redux/actions";
 import { useNavigate } from "react-router-dom";
-import ReactDOM from "react-dom";
 export default function AddProblemForm(){
 
     const token = useSelector(state=>state.user);
@@ -30,7 +29,7 @@ export default function AddProblemForm(){
             else navigate("/login");
         }
         validateUser();
-    },[])
+    },[]);
 
     const handleSubmit = async (e) =>{
         e.preventDefault();

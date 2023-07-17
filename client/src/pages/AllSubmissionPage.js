@@ -4,7 +4,6 @@ import { GetProSol, VerifyUser } from "../services/api";
 import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../redux/actions";
 import React from "react";
-import ReactDOM from "react-dom";
 export default function AllSubmissionPage(){
     const { id } = useParams();
     const [solArr,setSolArr] = useState([]);

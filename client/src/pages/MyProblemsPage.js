@@ -4,7 +4,6 @@ import { DeleteProblem, DeleteSolution, DeleteTestcase, GetUserProb, VerifyUser 
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { logoutUser } from "../redux/actions";
-import ReactDOM from "react-dom";
 export default function MyProblemsPage(){
 
     const token = useSelector(state=>state.user);

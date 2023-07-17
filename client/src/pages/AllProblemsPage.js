@@ -3,7 +3,6 @@ import { GetProbList } from "../services/api";
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import React from "react";
-import ReactDOM from "react-dom";
 export default function AllProblemPage(){
     const [proArr,setProArr] = useState([])
     const navigate = useNavigate();
