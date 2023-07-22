@@ -5,7 +5,7 @@ WORKDIR /app
 RUN apk add --update build-base
 
 ENV JWT_SECRET = "bjhfewf74926966jheufuf"
-ENV MONGO_URL = "mongodb+srv://dazedtree372gamer:LCH69mcV6MEd70Rs@cluster0.ekhzfby.mongodb.net/?retryWrites=true&w=majority"
+ENV MONGO_URL = "mongodb+srv://user2000:User%402000@cluster0.ekhzfby.mongodb.net/?retryWrites=true&w=majority"
 
 # install python3
 RUN apk add --update python3

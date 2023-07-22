@@ -5,7 +5,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { logoutUser } from "../redux/actions";
 
 export default function SingleProblem(){
-    
     const { id } = useParams();
     const [proName,setProName] = useState('');
     const [proStat,setProStat] = useState('');
