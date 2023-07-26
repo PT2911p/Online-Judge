@@ -16,4 +16,4 @@ COPY . .
 
 EXPOSE 8000
 
-CMD ["npx", "nodemon", "index"];
+CMD ["node", "index.js"];
