@@ -1,6 +1,6 @@
 import axios from 'axios'
 
- const API_URI = "https://online-judge-node01.onrender.com";
+ const API_URI = "https://online-judge-node01.onrender.com:8000";
 
 export const Register = async (data) => {
     try {
