@@ -17,7 +17,7 @@ app.listen(PORT, () => {
 app.use(
   cors({
     credentials: true,
-    origin: ["https://64c10810ff6c2f5f34a88344--enchanting-conkies-3032f4.netlify.app"],
+    origin: "*",
     methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
