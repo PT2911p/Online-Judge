@@ -1,1 +1,1701 @@
-https://www.youtube.com/watch?v=js1haaCgLEc
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useEffect } from "react";
+import { changeSearch, checkIfTokenExists, logoutUser } from "../redux/actions";
+
+export default function Navbar(){
+    const token = useSelector(state=>state.user);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    let filter;
+
+    useEffect(()=>{
+        dispatch(checkIfTokenExists());
+    },[])
+
+    const handlelogout = () =>{
+        dispatch(logoutUser());
+        navigate('/');
+    }
+
+    return (
+        <nav class="bg-white border-gray-200 dark:bg-gray-900">
+            <div class="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
+                <div class="flex items-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="white" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+                    </svg>
+                    <Link to={'/'} class="ml-4 self-center text-2xl font-semibold whitespace-nowrap dark:text-white">MyCompiler</Link>
+                </div>
+                <div class="relative mr-5">
+                    <div class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                    <svg class="w-5 h-5 text-gray-500" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z" clip-rule="evenodd"></path></svg>
+                    </div>
+                    <input value={filter} type="text" id="search-navbar" class="block w-full p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" onChange={(ev)=>dispatch(changeSearch(ev.target.value))} placeholder="Search Problem" />
+                </div>
+                <div class="items-center justify-between hidden w-full md:flex md:w-auto md:order-1" id="navbar-search">
+                    <ul class="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                        <Link to={'/'}>
+                        <a href="#/" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Home</a>
+                        </Link>
+                        {
+                            !token.token && (
+                                <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                                    <Link to={'/login'}>
+                                    <a href="#/" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 md:dark:hover:text-blue-500 dark:text-white dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Login</a>
+                                    </Link>
+                                </ul>
+                            )
+                        }
+                        {
+                            token.token && (
+                                <ul className="flex flex-col p-4 md:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
+                                    <Link to={'/addProblem'}>
+                                    <a href="#/" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Add Problem</a>
+                                    </Link>
+                                    <Link to={'/profile'}>
+                                    <a href="#/" class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700">Profile</a>
+                                    </Link>
+                                    <li class="block py-2 pl-3 pr-4 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent dark:border-gray-700 cursor-pointer" onClick={handlelogout}>
+                                        Logout
+                                    </li>
+                                </ul>
+                            )
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    );
+}
+explain this code
+ChatGPT
+This code is a React component called "Navbar," which represents the navigation bar for a web application. The navigation bar is designed to have different links and options based on whether the user is logged in or not. The component uses the React Router and React Redux libraries for navigation and state management.
+
+Let's go through the code step by step:
+
+Import statements:
+
+Link and useNavigate are imported from "react-router-dom." These are used for navigation and linking to different routes within the application.
+useSelector and useDispatch are imported from "react-redux." These are used to access and update the application state.
+useEffect is imported from "react." This is used to perform side effects in the component, such as dispatching actions when the component mounts.
+Function Component:
+The code defines a function component called Navbar. This component represents the navigation bar for the application.
+
+Redux State and Dispatch:
+
+The useSelector hook is used to retrieve the token from the Redux store. The token variable will be used to determine whether the user is logged in or not.
+The useDispatch hook is used to get a reference to the Redux store's dispatch function. This function will be used to dispatch actions to update the state.
+useEffect:
+
+The useEffect hook is used to dispatch the checkIfTokenExists() action when the component mounts. This action presumably checks whether the user's authentication token exists or not.
+handlelogout function:
+
+The handlelogout function is called when the user clicks the "Logout" link in the navigation bar. It dispatches the logoutUser() action and then navigates the user to the home route ("/") using the navigate function from React Router.
+Return statement (JSX):
+The return statement contains the JSX code that represents the navigation bar UI. It includes:
+
+A logo or application name represented by an SVG icon and a link to the home page.
+A search input field with an onChange handler that dispatches the changeSearch action with the updated search value.
+A list of navigation links and options that depend on whether the user is logged in or not. If the user is not logged in (!token.token), only a "Login" link is shown. If the user is logged in (token.token), three links are shown: "Add Problem," "Profile," and a "Logout" option.
+Note: The code uses Tailwind CSS classes for styling the navigation bar elements.
+
+Overall, this code creates a dynamic navigation bar that shows different links and options based on the user's authentication status and allows users to search for problems in the application. When the user clicks "Logout," they are logged out, and the application navigates them back to the home page.
+
+
+
+
+
+User
+import { Link, useLocation } from "react-router-dom";
+import React from "react";
+export default function AccountNav(){
+    const {pathname} = useLocation();
+    let subpage = pathname.split('/')?.[1];
+
+    function linkClasses(type=null){
+        let classes = 'w-full text-center gap-1 py-2 px-6'
+        if(type === subpage){
+            classes += ' border-b-2 border-white-300 text-white';
+        }else{
+            classes += ' text-gray-500';
+        }
+        return classes;
+    }
+
+    return (
+        <nav className="w-full flex flex-row justify-around mb-4">
+            <Link className={linkClasses('profile')} to={'/profile'}>
+                My Submissions
+            </Link>
+            <Link className={linkClasses('myproblems')} to={'/myproblems'}>
+                My Problems
+            </Link>
+        </nav>
+    );
+}
+explain
+ChatGPT
+This code defines a React functional component called "AccountNav," which represents a navigation bar for the user's account-related pages. The navigation bar contains two links: "My Submissions" and "My Problems," and the appearance of the links depends on the current URL location.
+
+Let's go through the code step by step:
+
+Import statements:
+
+Link and useLocation are imported from "react-router-dom." Link is used to create anchor links that navigate to different routes, and useLocation is used to access the current location (URL) of the application.
+Function Component:
+The code defines a function component called AccountNav. This component represents the navigation bar for the user's account-related pages.
+
+useLocation hook:
+
+The useLocation hook is used to get the current location (pathname) of the application. The pathname variable will contain the URL path without the domain or query parameters.
+subpage variable:
+
+The pathname is split using the forward slash ('/') as the delimiter, and the result is stored in the subpage variable. The split method returns an array, and the ?. optional chaining is used to access the first element of the array (index 1) if it exists. This is done to extract the first part of the URL path, which might represent the current subpage. For example, if the URL is "/profile," the subpage variable will be assigned the value "profile."
+linkClasses function:
+
+The linkClasses function takes a type parameter, which represents the subpage type (e.g., "profile" or "myproblems").
+The function dynamically generates CSS classes for the link element based on the current subpage type.
+If the type parameter matches the subpage variable (the current subpage), the link is given the CSS classes for an active link (white text color and a bottom border in white).
+If the type parameter does not match the subpage variable (not the current subpage), the link is given the CSS classes for an inactive link (gray text color).
+Return statement (JSX):
+
+The return statement contains the JSX code for the navigation bar.
+Two Link components are created with their respective titles ("My Submissions" and "My Problems").
+The className prop of each Link component is set to the result of calling the linkClasses function with the corresponding subpage type ('profile' for "My Submissions" and 'myproblems' for "My Problems").
+When the user clicks on any of the links, they will navigate to the corresponding route (e.g., "/profile" or "/myproblems").
+Styling:
+
+The navigation bar is styled using Tailwind CSS classes to create a horizontal row of links with some spacing and margin at the bottom (mb-4).
+In summary, this code creates a dynamic navigation bar for the user's account-related pages. The appearance of the links changes based on the current URL, providing visual feedback to the user about their current location in the application.
+
+
+
+
+
+User
+import React, { useEffect, useState } from "react";
+import { AddProblem, UploadFile, VerifyUser } from "../services/api";
+import { useSelector, useDispatch } from "react-redux";
+import { logoutUser } from "../redux/actions";
+import { useNavigate } from "react-router-dom";
+export default function AddProblemForm(){
+
+    const token = useSelector(state=>state.user);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const [uname,setUName] = useState('');
+    const [pName,setPName] = useState('');
+    const [statement,setStatement] = useState('');
+    const [constraint,setConstraint] = useState('');
+    const [diff,setDiff] = useState('Medium');
+    const [fname,setFName] = useState('');
+
+    useEffect(()=>{
+        const validateUser = async ()=>{
+            if(token.token !== ""){
+                const data = { token: token.token };
+                const { status, user } = await VerifyUser(data);
+                if(!status){
+                    dispatch(logoutUser());
+                    navigate("/login");
+                }
+                setUName(user);
+            }
+            else navigate("/login");
+        }
+        validateUser();
+    },[]);
+
+    const handleSubmit = async (e) =>{
+        e.preventDefault();
+        if(pName && statement && constraint && fname){
+            const data = {
+                writer: uname,
+                proname: pName,
+                statement: statement,
+                constraints: constraint,
+                difficulty: diff,
+            }
+            const { success, prob } = await AddProblem(data);
+            if (success) {
+                const data = new FormData();
+                data.append("name",fname.name);
+                data.append("file",fname);
+                data.append("problem",prob._id);
+                const op = await UploadFile(data);
+                if(op.success) navigate('/');
+            }
+        }
+    }
+
+    return (
+        <div className="text-white mx-10 mt-2">
+            <div>
+                <h3 className="text-2xl mt-4">Add Problem Name</h3>
+                <input  className="border rounded-md w-full text-black" type="text" 
+                            value={pName}
+                            onChange={ev => setPName(ev.target.value)}
+                            placeholder="Must be unique and short" required />
+                <h3 className="text-2xl mt-4">Add Problem Statement</h3>
+                <textarea   className="border w-full rounded-lg text-black" type="text" rows={10}
+                            value={statement}
+                            onChange={ev => setStatement(ev.target.value)}
+                            placeholder="Must Explain Question properly" required />
+                <h3 className="text-2xl mt-4">Add Problem Constraints</h3>
+                <textarea   className="border w-full rounded-lg text-black" type="text" rows={7} 
+                            value={constraint}
+                            onChange={ev => setConstraint(ev.target.value)}
+                            placeholder="Must be to the point" />
+                <div>
+                    <select value={diff} className="bg-white text-black rounded-lg m-2" onChange={(ev)=>setDiff(ev.target.value)}>
+                        <option value="Easy">Easy</option>
+                        <option value="Medium">Medium</option>
+                        <option value="Hard">Hard</option>
+                    </select>
+                </div>
+                <div className="flex justify-between">
+                    <input className="rounded-lg m-1" type="file" onChange={(ev)=>setFName(ev.target.files[0])}/>
+                    <button className="border-2 rounded-lg mr-1 mb-2 p-2" onClick={handleSubmit}>Submit</button>
+                </div>
+            </div>
+        </div>
+    );
+}
+explain
+ChatGPT
+This code defines a React functional component called "AddProblemForm," which represents a form for adding a new problem to the application. The form allows the user to input various details of the problem, such as the problem name, statement, constraints, difficulty level, and an optional file upload for additional resources related to the problem.
+
+Let's go through the code step by step:
+
+Import statements:
+
+The component imports required modules such as React, useEffect, useState, useDispatch, useSelector, and useNavigate.
+It also imports functions from "../services/api" for interacting with the API endpoints to verify the user, add a problem, and upload files.
+Lastly, the component imports the "logoutUser" action from "../redux/actions" to handle user logout.
+Function Component:
+The code defines a function component called AddProblemForm. This component represents the form for adding a new problem.
+
+State Variables:
+The component uses multiple useState hooks to manage state variables for different inputs in the form:
+
+uname, pName, statement, constraint, diff, and fname are state variables representing the user's name, problem name, problem statement, problem constraints, problem difficulty level, and the file selected for upload, respectively.
+useEffect:
+
+The useEffect hook is used to validate the user's authentication status before allowing access to the form.
+It checks if the user has a valid token in the Redux store. If the token exists, it sends a request to verify the user with the VerifyUser function from the API service.
+If the user is not authenticated (status is false), the logoutUser action is dispatched to log the user out, and the application navigates to the login page.
+handleSubmit function:
+
+The handleSubmit function is called when the user clicks the "Submit" button in the form.
+It prevents the default form submission behavior to handle form submission programmatically.
+It validates whether all required fields (problem name, statement, constraints, and file) have been filled out.
+If all required fields are filled out, the function assembles the problem data into an object and sends a request to add the problem using the AddProblem function from the API service.
+If the problem is successfully added (success is true), it proceeds to upload the associated file (if selected) using the UploadFile function from the API service.
+If both the problem and the file upload are successful, the application navigates the user back to the home page ("/").
+Return statement (JSX):
+The return statement contains the JSX code for the form:
+
+It includes various input elements for the problem name, statement, constraints, difficulty level (as a dropdown select), and a file input for the optional file upload.
+The "Submit" button triggers the handleSubmit function when clicked.
+Styling:
+
+The form elements are styled using Tailwind CSS classes to set their appearance, spacing, and alignment.
+In summary, this code creates a form that allows authenticated users to add a new problem to the application. The form collects various details about the problem and optionally allows the user to upload related files. The user's authentication status is verified before allowing access to the form, and successful submissions trigger appropriate API requests to add the problem and upload the file.
+
+
+
+
+
+User
+import { useEffect, useState } from "react";
+import { GetProbList } from "../services/api";
+import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import React from "react";
+export default function AllProblemPage(){
+    const [proArr,setProArr] = useState([])
+    const navigate = useNavigate();
+    const filter = useSelector(state=>state.user);
+
+    const res = proArr.filter((prob)=>{return prob.proname.toLowerCase().includes(filter.search.toLowerCase())});
+
+    useEffect(()=>{
+        const getlist = async () =>{
+            const { list } = await GetProbList();
+            console.log(list);
+            setProArr(list); 
+        }
+        getlist();
+    },[]);
+
+    return (
+        <div class="relative overflow-x-auto shadow-md">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">
+                            Problem Name
+                        </th>
+                        <th scope="col" class="px-6 py-3">
+                            Difficulty
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                {
+                    res.length>0 && res.map((item)=>(
+                        <tr onClick={()=>navigate(`/SingleProblem/${item._id}`)} class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                            <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                {item.proname}
+                            </th>
+                            <td class="px-6 py-4">
+                                {item.difficulty}
+                            </td>
+                        </tr>
+                    ))
+                }
+                </tbody>
+            </table>
+        </div>
+    );
+}
+ChatGPT
+This code defines a React functional component called "AllProblemPage," which represents a page displaying a list of all problems available in the application. The list can be filtered based on a search query provided by the user.
+
+Let's go through the code step by step:
+
+Import statements:
+
+The component imports required modules such as React, useEffect, useState, useSelector, and useNavigate.
+It also imports functions from "../services/api" to fetch the list of problems from the API service.
+Function Component:
+The code defines a function component called AllProblemPage. This component represents the page displaying a list of all problems.
+
+State Variables:
+
+The component uses the useState hook to manage a state variable called proArr, which will store the list of problems fetched from the API.
+Navigate hook:
+
+The useNavigate hook is used to get the navigate function, which allows the component to navigate to different routes when a problem from the list is clicked.
+Redux State:
+
+The component uses the useSelector hook to access the search property from the Redux store's user slice. This property contains the user's search query.
+Filtering the Problem List:
+
+The component filters the proArr based on the search query provided by the user. It uses the filter method to create a new array (res) containing only the problems whose proname (problem name) matches the search query (case-insensitive).
+The res array will be displayed on the page, and it will only contain the problems that match the user's search.
+useEffect:
+
+The useEffect hook is used to fetch the list of problems from the API when the component mounts.
+It calls the GetProbList function from the API service to retrieve the list of problems and stores it in the proArr state variable.
+Return statement (JSX):
+The return statement contains the JSX code for displaying the list of problems in a table format:
+
+The table has two columns: "Problem Name" and "Difficulty."
+The problems are displayed as rows in the table, and each row is clickable.
+When the user clicks on a problem row, it triggers the onClick event, which navigates the user to the "/SingleProblem/:id" route, where ":id" is the unique identifier of the selected problem.
+Styling:
+
+The table and its elements are styled using Tailwind CSS classes to set their appearance, spacing, and color scheme.
+In summary, this code creates a page that displays a list of all problems available in the application. The list can be filtered based on the user's search query, and each problem in the list is clickable, allowing the user to view the details of a specific problem when clicked.
+
+
+
+
+
+User
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { GetProSol, VerifyUser } from "../services/api";
+import { useSelector, useDispatch } from "react-redux";
+import { logoutUser } from "../redux/actions";
+import React from "react";
+export default function AllSubmissionPage(){
+    const { id } = useParams();
+    const [solArr,setSolArr] = useState([]);
+    const [mySub,setMySub] = useState(false); 
+    const token = useSelector(state=>state.user);
+    const navigate = useNavigate();
+    const dispatch = useDispatch();
+    const [uName,setUName] = useState('');
+    const [show,setShow] = useState(null);
+
+    useEffect(()=>{
+        const getProSol = async ()=>{
+            const { list } = await GetProSol(id);
+            setSolArr(list); 
+            if(token.token !== ""){
+                const data = { token: token.token };
+                const { status, user } = await VerifyUser(data);
+                if(!status) dispatch(logoutUser());
+                setUName(user);
+            }else{
+                setUName('random')
+            }
+        }
+        getProSol();
+    },[uName])
+
+    const handleMySub = () =>{
+        if(token.token === ""){
+            navigate("/login");
+        }
+        setMySub(true);
+    }
+
+    if(show !== null){
+        return (
+            <div className="ml-20 mr-20 mt-10">
+                <div className="flex flex-row justify-between text-white my-4 bg-gray-600 rounded-xl p-2">
+                    <div className="flex flex-row">
+                        <p className="mx-4">Language: {show.language}</p>
+                        <p className="mx-4">Verdict: {show.verdict}</p>
+                    </div>
+                    <button onClick={()=>setShow(null)}>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </button>
+                </div>
+                <div>
+                    <textarea value={show.code} rows={20} className="w-full rounded-xl text-white" disabled/>
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div>
+            <div className="my-2 flex flex-row justify-between">
+                <button className="border-2 rounded-lg p-2 text-white ml-4" onClick={handleMySub}>My Submission</button>
+                <button className="border-2 rounded-lg p-2 text-white mr-4" onClick={()=>setMySub(false)}>All Submission</button>
+            </div>
+            <div class="relative overflow-x-auto shadow-md">
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">
+                                User Name
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Problem
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Language
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Verdict
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Submitted 
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            !mySub && solArr.length>0 && solArr.map((item)=>(
+                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        {item.owner}
+                                    </th>
+                                    <td class="px-6 py-4">
+                                        {item.problem}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {item.language}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {item.verdict}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {item.submittedAt.substring(0, 10)}
+                                    </td>
+                                </tr>
+                            ))
+                        }
+                        {
+                            mySub && solArr.length>0 && solArr.filter((it)=>{return it.owner === uName}).map((item)=>(
+                                <tr onClick={()=>setShow(item)} class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                                        {item.owner}
+                                    </th>
+                                    <td class="px-6 py-4">
+                                        {item.problem}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {item.language}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {item.verdict}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {item.submittedAt.substring(0, 10)}
+                                    </td>
+                                </tr>
+                            ))
+                        }
+                    </tbody>
+                </table>
+            </div>           
+        </div>
+    );
+}
+ChatGPT
+This code defines a React functional component called "AllSubmissionPage," which represents a page that displays a list of all submissions for a specific problem. The page provides the option to view either all submissions or the user's own submissions.
+
+Let's go through the code step by step:
+
+Import statements:
+
+The component imports required modules such as React, useEffect, useState, useSelector, useDispatch, and useNavigate.
+It also imports functions from "../services/api" to fetch problem solutions and verify the user from the API service.
+The "logoutUser" action is imported from "../redux/actions" to handle user logout.
+Function Component:
+The code defines a function component called AllSubmissionPage. This component represents the page displaying a list of all submissions for a specific problem.
+
+useParams hook:
+
+The useParams hook is used to extract the id parameter from the URL. This id represents the unique identifier of the problem for which submissions are being displayed.
+State Variables:
+
+The component uses the useState hook to manage the following state variables:
+solArr: An array that will store the list of problem solutions fetched from the API.
+mySub: A boolean value that indicates whether the user wants to view only their own submissions (true) or all submissions (false).
+uName: A state variable to store the user's name for filtering their own submissions.
+show: A state variable used to display the code of a specific submission when clicked.
+Redux State:
+
+The component uses the useSelector hook to access the user slice from the Redux store. It retrieves the token property from the user slice.
+useEffect:
+
+The useEffect hook is used to fetch the list of problem solutions from the API when the component mounts. It calls the GetProSol function from the API service to retrieve the list of submissions for the specific problem (id).
+It also verifies the user by checking if the user has a valid token in the Redux store. If the user is not authenticated (status is false), the logoutUser action is dispatched to log the user out. The user's name (uName) is set to "random" if the user is not logged in.
+The useEffect hook is also configured to update when the uName state variable changes. This is used to fetch the user's submissions when they switch to view their own submissions.
+handleMySub function:
+
+The handleMySub function is called when the user clicks the "My Submission" button in the page header.
+If the user is not logged in (no valid token), they are redirected to the login page using the navigate function.
+If the user is logged in, the mySub state variable is set to true, indicating that the user wants to view their own submissions.
+Conditional Rendering:
+
+The component uses conditional rendering to determine what to display based on the show state variable. If show is not null, it displays the code and details of the selected submission in a separate div.
+If show is null, it displays the list of submissions as a table.
+JSX for Submissions List:
+
+The JSX code renders two buttons in the page header: "My Submission" and "All Submission." The "My Submission" button allows users to filter and view their own submissions, while the "All Submission" button displays all submissions for the problem.
+The list of submissions is displayed in a table, and each submission row is clickable. Clicking on a submission row displays the code and details of the selected submission in a separate div.
+Styling:
+
+The components and their elements are styled using Tailwind CSS classes to set their appearance, spacing, and color scheme.
+In summary, this code creates a page that displays a list of all submissions for a specific problem. Users can toggle between viewing all submissions or only their own submissions. When clicking on a submission, the user can view the code and details of the selected submission in a separate div.
+
+
+
+
+
+User
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import { Login } from "../services/api";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../redux/actions";
+export default function LoginPage(){
+    const navigate = useNavigate();
+    const [email,setEmail] = useState('');
+    const [pass,setPassword] = useState('');
+    const dispatch = useDispatch();
+    const token = useSelector(state=>state.user);
+
+    useEffect(()=>{
+        if(token.token !== "") navigate(-1);
+    },[])
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if(email && pass){
+            const data = {
+              email: email,
+              password: pass,
+            }
+            const { success, message, token } = await Login(data);
+            if (success) {
+                dispatch(loginUser({token}));
+                handleSuccess(message);
+                navigate(-1);
+            } else {
+                handleError(message);
+            }
+            setEmail('');
+            setPassword('');
+        }
+    }
+
+    const handleError = (err) =>
+        toast.error(err, {
+        position: "bottom-left",
+    });
+    const handleSuccess = (msg) =>
+        toast.success(msg, {
+        position: "bottom-left",
+    });
+
+    return (
+        <div className="mt-20 flex items-center justify-center">
+            <div className="form_container">
+                <h2>Login Account</h2>
+                <form onSubmit={handleSubmit}>
+                    <div>
+                    <label htmlFor="email">Email</label>
+                    <input
+                        type="email"
+                        name="email"
+                        value={email}
+                        placeholder="Enter your email"
+                        onChange={(ev)=>setEmail(ev.target.value)}
+                    />
+                    </div>
+                    <div>
+                    <label htmlFor="password">Password</label>
+                    <input
+                        type="password"
+                        name="password"
+                        value={pass}
+                        placeholder="Enter your password"
+                        onChange={(ev)=>setPassword(ev.target.value)}
+                    />
+                    </div>
+                    <button type="submit">Submit</button>
+                    <span>
+                    Already have an account? <Link className="underline" to={"/signup"}>Signup</Link>
+                    </span>
+                </form>
+                <ToastContainer />
+            </div>
+        </div>
+    );
+}
+ChatGPT
+This code defines a React functional component called "LoginPage," which represents a page for user login. It allows users to enter their email and password to authenticate themselves.
+
+Let's go through the code step by step:
+
+Import statements:
+
+The component imports required modules such as React, useEffect, useState, Link, and useNavigate from "react-router-dom."
+It also imports the ToastContainer and toast components from "react-toastify" to display success and error messages.
+The Login function is imported from "../services/api" to handle the login API call.
+The useDispatch and useSelector hooks are used to access the Redux store and dispatch actions.
+Function Component:
+The code defines a function component called LoginPage. This component represents the page for user login.
+
+State Variables:
+
+The component uses the useState hook to manage the following state variables:
+email: Represents the user's email input in the login form.
+pass: Represents the user's password input in the login form.
+Navigate hook:
+
+The useNavigate hook is used to get the navigate function, which allows the component to navigate to different routes programmatically.
+Redux State:
+
+The component uses the useSelector hook to access the user slice from the Redux store. It retrieves the token property from the user slice.
+useEffect:
+
+The useEffect hook is used to check if the user is already authenticated by checking if the token exists in the Redux store.
+If the user is already authenticated (token.token is not an empty string), the component navigates to the previous page (navigate(-1)).
+handleSubmit function:
+
+The handleSubmit function is called when the user clicks the "Submit" button in the login form.
+It prevents the default form submission behavior to handle form submission programmatically.
+It validates whether both the email and password fields are filled out.
+If both fields are filled out, it assembles the login data into an object and sends a login request to the server using the Login function from the API service.
+If the login is successful (success is true), it dispatches the loginUser action with the token received from the server to update the user's authentication status in the Redux store.
+It displays success or error messages using the handleSuccess and handleError functions from "react-toastify."
+After successful login, it navigates the user back to the previous page (navigate(-1)).
+Toast Messages:
+
+The handleError and handleSuccess functions are used to display error and success messages, respectively, using the ToastContainer component from "react-toastify."
+Return statement (JSX):
+The return statement contains the JSX code for the login page:
+
+It displays a form where the user can input their email and password to log in.
+The form includes input fields for email and password, and a "Submit" button triggers the handleSubmit function when clicked.
+If the user does not have an account, they can navigate to the signup page using the "Signup" link provided.
+Styling:
+
+The login form and its elements are styled using CSS classes.
+In summary, this code creates a page that allows users to log in to their accounts by entering their email and password. The page checks the user's authentication status before rendering, and after successful login, the user is redirected back to the previous page. Success and error messages are displayed using toast notifications from "react-toastify."
+
+
+
+
+
+User
+import { React,useDispatch, useSelector } from "react-redux";
+import Subbar from "../components/Subbar"
+import { DeleteProblem, DeleteSolution, DeleteTestcase, GetUserProb, VerifyUser } from "../services/api";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { logoutUser } from "../redux/actions";
+export default function MyProblemsPage(){
+
+    const token = useSelector(state=>state.user);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const [uname,setUName] = useState('');
+    const [proArr,setProArr] = useState([]);
+    const [probId,setProbId] = useState(null);
+
+    useEffect(()=>{
+        const validateUser = async ()=>{
+            if(token.token !== ""){
+                const data = { token: token.token };
+                const { status, user } = await VerifyUser(data);
+                if(!status){
+                    dispatch(logoutUser());
+                    navigate("/login");
+                }
+                setUName(user);
+                const { list } = await GetUserProb(user);
+                setProArr(list);
+            }else{
+                setUName('random');
+            }
+        }
+        validateUser();
+    },[uname])
+
+    if(probId!=null){
+        const handleRemove = async () =>{
+            if(window.confirm("Sure? want to Delete Problem") == true){
+                await DeleteProblem(probId);
+                await DeleteTestcase(probId);
+                await DeleteSolution(probId);
+                navigate("/profile");
+            }else setProbId(null);
+        } 
+        handleRemove();
+    }
+
+    return (
+        <div>
+            <Subbar/>
+            <div className="text-white flex flex-col justify-center items-center my-4">
+                <h1>Hi! {uname}</h1>
+                <p>This are all your Problems</p>
+            </div>
+            <div class="relative overflow-x-auto shadow-md">
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">
+                                Problem
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Difficulty
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Created At
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Edit 
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Delete 
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            proArr.length>0 && proArr.map((item)=>(
+                                <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <td class="px-6 py-4">
+                                        {item.proname}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {item.difficulty}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {item.createdAt.substring(0, 10)}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <a href="#" class="font-medium text-blue-600 dark:text-blue-500 hover:underline">Edit</a>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <butoon onClick={()=>setProbId(item._id)} class="font-medium text-red-600 dark:text-red-500 hover:underline cursor-pointer">Remove</butoon>
+                                    </td>
+                                </tr>
+                            ))
+                        }
+                    </tbody>
+                </table>
+            </div>           
+        </div>
+    );
+}
+ChatGPT
+This code defines a React functional component called "MyProblemsPage," which represents a page that displays a list of problems created by the currently logged-in user. Users can edit or delete their own problems from this page.
+
+Let's go through the code step by step:
+
+Import statements:
+
+The component imports required modules such as React, useEffect, useState, useDispatch, useSelector, useNavigate, and Link from "react-redux" and "react-router-dom."
+It also imports various API service functions to interact with the backend.
+The logoutUser action is imported from "../redux/actions" to handle user logout.
+Function Component:
+The code defines a function component called MyProblemsPage. This component represents the page that displays a list of problems created by the currently logged-in user.
+
+State Variables:
+
+The component uses the useState hook to manage the following state variables:
+token: Retrieves the user token from the Redux store.
+dispatch: Dispatches actions to the Redux store.
+navigate: Obtains the navigate function to programmatically navigate between routes.
+uname: Represents the username of the logged-in user.
+proArr: An array that stores the list of problems created by the user.
+probId: Holds the ID of the problem that the user wants to delete.
+useEffect:
+
+The useEffect hook is used to check if the user is already authenticated by checking if the token exists in the Redux store.
+If the user is already authenticated (token.token is not an empty string), the component proceeds to validate the user by calling the VerifyUser function from the API service.
+If the user is not authenticated or the verification fails, the logoutUser action is dispatched to log the user out, and the user is redirected to the login page using the navigate function.
+If the user is authenticated, their username is retrieved from the verification response, and their problems are fetched using the GetUserProb function from the API service. The retrieved list of problems is stored in the proArr state.
+Conditional Rendering:
+
+If probId is not null, it indicates that the user wants to delete a problem.
+The component triggers the handleRemove function to delete the problem and its associated test cases and solutions.
+After successful deletion, the user is redirected to the profile page using the navigate function, and probId is reset to null.
+JSX and Rendering:
+
+The component returns JSX code for the page, which includes the user's username and a list of problems they have created.
+The list of problems is displayed in a table, and each row contains the problem's name, difficulty, and creation date.
+Edit and Remove buttons are provided for each problem, allowing users to perform respective actions.
+Styling:
+
+The components and their elements are styled using Tailwind CSS classes to set their appearance, spacing, and color scheme.
+In summary, this code creates a page that displays a list of problems created by the currently logged-in user. Users can edit or delete their own problems from this page. The component checks the user's authentication status and verifies their identity before fetching and displaying the user's problems.
+
+
+
+
+
+User
+import { React,useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { logoutUser } from "../redux/actions";
+import { GetUserSol, VerifyUser } from "../services/api";
+import { useNavigate } from "react-router-dom";
+import Subbar from "../components/Subbar";
+export default function ProfilePage(){
+    const token = useSelector(state=>state.user);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const [solArr,setSolArr] = useState([]);
+    const [uname,setUName] = useState('');
+    const [show,setShow] = useState(null);
+
+    useEffect(()=>{
+        const validateUser = async ()=>{
+            if(token.token !== ""){
+                const data = { token: token.token };
+                const { status, user } = await VerifyUser(data);
+                if(!status){
+                    dispatch(logoutUser());
+                    navigate("/login");
+                }
+                setUName(user);
+                const { list } = await GetUserSol(user);
+                setSolArr(list);
+            }else{
+                setUName('random');
+            }
+        }
+        validateUser();
+    },[uname])
+
+    if(show !== null){
+        return (
+            <div className="ml-20 mr-20 mt-10">
+                <div className="flex flex-row justify-between text-white my-4 bg-gray-600 rounded-xl p-2">
+                    <div className="flex flex-row">
+                        <p className="mx-4">Language: {show.language}</p>
+                        <p className="mx-4">Verdict: {show.verdict}</p>
+                    </div>
+                    <button onClick={()=>setShow(null)}>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </button>
+                </div>
+                <div>
+                    <textarea value={show.code} rows={20} className="w-full rounded-xl text-white" disabled/>
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div>
+            <Subbar/>
+            <div className="text-white flex flex-col justify-center items-center my-4">
+                <h1>Hi! {uname}</h1>
+                <p>This are all your Submissions</p>
+            </div>
+            <div class="relative overflow-x-auto shadow-md">
+                <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                    <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                        <tr>
+                            <th scope="col" class="px-6 py-3">
+                                Problem
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Language
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Verdict
+                            </th>
+                            <th scope="col" class="px-6 py-3">
+                                Submitted 
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {
+                            solArr.length>0 && solArr.map((item)=>(
+                                <tr onClick={()=>setShow(item)} class="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
+                                    <td class="px-6 py-4">
+                                        {item.problem}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {item.language}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {item.verdict}
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        {item.submittedAt.substring(0, 10)}
+                                    </td>
+                                </tr>
+                            ))
+                        }
+                    </tbody>
+                </table>
+            </div>           
+        </div>
+    );
+}
+ChatGPT
+This code defines a React functional component called "ProfilePage." This component represents a user profile page where the user's submissions are displayed in a table. Each submission shows details like the problem name, language used, verdict, and submission date. Users can click on a submission row to view the code details.
+
+Let's go through the code step by step:
+
+Import statements:
+
+The component imports required modules such as React, useEffect, useState, useSelector, useDispatch, useNavigate, and Link from "react-redux" and "react-router-dom."
+It also imports various API service functions to interact with the backend.
+The logoutUser action is imported from "../redux/actions" to handle user logout.
+The Subbar component is imported, which presumably represents a navigation bar for the user's profile page.
+Function Component:
+The code defines a function component called ProfilePage. This component represents the user profile page and displays the user's submissions.
+
+State Variables:
+
+The component uses the useState hook to manage the following state variables:
+token: Retrieves the user token from the Redux store.
+dispatch: Dispatches actions to the Redux store.
+navigate: Obtains the navigate function to programmatically navigate between routes.
+solArr: An array that stores the user's submissions.
+uname: Represents the username of the logged-in user.
+show: A submission object to display code details when the user clicks on a submission row.
+useEffect:
+
+The useEffect hook is used to check if the user is already authenticated by checking if the token exists in the Redux store.
+If the user is already authenticated (token.token is not an empty string), the component proceeds to validate the user by calling the VerifyUser function from the API service.
+If the user is not authenticated or the verification fails, the logoutUser action is dispatched to log the user out, and the user is redirected to the login page using the navigate function.
+If the user is authenticated, their username is retrieved from the verification response, and their submissions are fetched using the GetUserSol function from the API service. The retrieved list of submissions is stored in the solArr state.
+Conditional Rendering:
+
+If show is not null, it indicates that the user clicked on a submission row to view the code details.
+The component renders a section displaying the language and verdict of the submission, along with a button to close the code view.
+The code view shows the submission code in a textarea, which is disabled to prevent user modifications.
+JSX and Rendering:
+
+The component returns JSX code for the profile page, which includes the user's username and a list of their submissions.
+The list of submissions is displayed in a table, and each row contains the problem name, language, verdict, and submission date.
+When the user clicks on a submission row, the onClick event handler is triggered to set the show state to the clicked submission object, displaying the code details.
+Styling:
+
+The components and their elements are styled using Tailwind CSS classes to set their appearance, spacing, and color scheme.
+In summary, this code creates a user profile page where the user's submissions are displayed in a table. The component fetches the user's submissions and displays their details. When the user clicks on a submission row, the code details are shown, and the user can view the submission's code. The profile page also includes a navigation bar called "Subbar."
+
+
+
+
+
+User
+import React, { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import { Register } from "../services/api";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../redux/actions";
+
+export default function SignupPage(){
+    const navigate = useNavigate();
+    const [email,setEmail] = useState('');
+    const [uname,setUname] = useState('');
+    const [pass,setPassword] = useState('');
+    const dispatch = useDispatch();
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        if(email && uname && pass){
+            const data = {
+              email: email,
+              username: uname,
+              password: pass,
+            }
+            const { success, message, token } = await Register(data);
+            if (success) {
+                dispatch(loginUser({token}));
+                handleSuccess(message);
+                navigate(-1);
+            } else {
+                handleError(message);
+            }
+            setEmail('');
+            setUname('');
+            setPassword('');
+        }
+    }
+
+    const handleError = (err) =>
+        toast.error(err, {
+        position: "bottom-left",
+    });
+
+    const handleSuccess = (msg) =>
+        toast.success(msg, {
+        position: "bottom-right",
+    });
+
+    return (
+        <div className="mt-20 flex items-center justify-center">
+            <div className="form_container">
+                <h2>Signup Account</h2>
+                <form onSubmit={handleSubmit}>
+                    <div>
+                    <label htmlFor="email">Email</label>
+                    <input
+                        type="email"
+                        name="email"
+                        value={email}
+                        placeholder="Enter your email"
+                        onChange={(ev)=>setEmail(ev.target.value)}
+                    />
+                    </div>
+                    <div>
+                    <label htmlFor="email">Username</label>
+                    <input
+                        type="text"
+                        name="username"
+                        value={uname}
+                        placeholder="Enter your username"
+                        onChange={(ev)=>setUname(ev.target.value)}
+                    />
+                    </div>
+                    <div>
+                    <label htmlFor="password">Password</label>
+                    <input
+                        type="password"
+                        name="password"
+                        value={pass}
+                        placeholder="Enter your password"
+                        onChange={(ev)=>setPassword(ev.target.value)}
+                    />
+                    </div>
+                    <button type="submit">Submit</button>
+                    <span>
+                    Already have an account? <Link to={"/login"}>Login</Link>
+                    </span>
+                </form>
+                <ToastContainer />
+            </div>
+        </div>
+    );
+}
+ChatGPT
+This code defines a React functional component called "SignupPage." This component represents a user signup page where new users can register by providing their email, username, and password.
+
+Let's go through the code step by step:
+
+Import statements:
+
+The component imports required modules such as React, useState, and Link from "react-router-dom."
+It also imports various elements from the "react-toastify" library to display toast notifications for success and error messages.
+The Register function is imported from "../services/api" to handle user registration.
+The loginUser action is imported from "../redux/actions" to handle user login after successful registration.
+Function Component:
+The code defines a function component called SignupPage. This component represents the user signup page.
+
+State Variables:
+
+The component uses the useState hook to manage the following state variables:
+email: Stores the user's email during signup.
+uname: Stores the user's desired username during signup.
+pass: Stores the user's desired password during signup.
+Form Submission:
+
+When the user submits the signup form, the handleSubmit function is triggered.
+The function first checks if the required fields (email, uname, and pass) are not empty.
+If all required fields have values, the component proceeds to call the Register function from the API service to register the user.
+The API response contains information about the success or failure of the registration process, along with a message and an authentication token if successful.
+If the registration is successful, the loginUser action is dispatched with the authentication token to log the user in and update the Redux store accordingly.
+The function also displays a toast notification with a success message if the registration is successful or an error message if there's an issue with the registration.
+JSX and Rendering:
+
+The component returns JSX code for the signup page, which includes a form with input fields for email, username, and password.
+The form includes a submit button, and each input field is associated with its respective state variable.
+The page also provides a link to the login page for users who already have an account.
+Styling:
+
+The components and their elements are styled using CSS classes to set their appearance, spacing, and color scheme.
+In summary, this code creates a user signup page where new users can register by providing their email, username, and password. The page uses React hooks to manage the form inputs' state and handles form submission for user registration. After successful registration, the user is logged in, and a toast notification is displayed with a success message. If there are any errors during registration, an error toast notification is shown with relevant error messages.
+
+
+
+
+
+User
+import {React, useEffect, useState } from "react";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { ChkSolStat, GetProb, PostCodeForRun, SubmitSol, VerifyUser } from "../services/api";
+import { useSelector, useDispatch } from "react-redux";
+import { logoutUser } from "../redux/actions";
+
+export default function SingleProblem(){
+    const { id } = useParams();
+    const [proName,setProName] = useState('');
+    const [proStat,setProStat] = useState('');
+    const [proConst,setProConst] = useState('');
+    const [diff,setDiff] = useState('');
+    const [uname,setUName] = useState('');
+    const [writer,setWriter] = useState('');
+    const token = useSelector(state=>state.user);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const [language,setLanguage] = useState('c');
+    const [code,setCode] = useState('');
+    const [stat,setStatus] = useState('');
+    const [input,setInput] = useState('');
+    const [output,setOutput] = useState('');
+
+    useEffect(()=>{
+        const getProb = async () => {
+            const resp = await GetProb(id);
+            setProName(resp.doc.proname);
+            setProStat(resp.doc.statement);
+            setProConst(resp.doc.constraints);
+            setDiff(resp.doc.difficulty);
+            setWriter(resp.doc.writer);
+            if(token.token !== ""){
+                const data = { token: token.token };
+                const { status, user } = await VerifyUser(data);
+                if(!status){
+                    dispatch(logoutUser());
+                    navigate("/login");
+                }
+                setUName(user); 
+            }else{
+                setUName('random');
+            }
+        }
+        getProb();
+    },[uname]);
+    
+    const handleSubmit = async () => {
+        if(token.token === ""){
+            navigate("/login");
+        }
+        if(language && code && uname){
+            const data = {
+                proid: id,
+                owner: uname,
+                problem: proName,
+                language: language,
+                code: code,
+            }
+            const { sol } = await SubmitSol(data);
+            let intervalID = setInterval( async () => {
+                const { doc } = await ChkSolStat(sol._id);
+                if (doc.verdict !== "pending") {
+                    clearInterval(intervalID); 
+                    setStatus(doc.verdict);
+                }
+            }, 1000);
+        }
+    }
+
+    const handleRun = async () => {
+        if(language && code){
+            const data = {
+                input: input,
+                language: language,
+                code: code,
+            }
+            const resp = await PostCodeForRun(data);
+            setOutput(resp.result);
+        }
+    }
+
+    return (
+        <div className="flex flex-col text-white">
+            <div className="flex flex-row justify-between mt-10">
+                <div className="ml-24">
+                    <div className="text-3xl mb-2">
+                        {proName}
+                    </div>
+                    <div className="text-xl my-4">
+                        {proStat}
+                    </div>
+                    <div className="text-lg my-4">
+                        {proConst}
+                    </div>
+                    <div>
+                        Writer: {writer}
+                    </div>
+                </div>
+                <div>
+                    {diff}
+                </div>
+                <div className="mr-24">
+                    <Link to={`/AllSubmissions/${proName}`} className="mt-1 border-2 rounded-lg p-2">Submissions</Link>
+                </div>
+            </div>
+            <div className="flex flex-row justify-around">
+                <div>
+                    <form className="flex flex-col">
+                        <div className="my-2 ml-5">
+                            <select value={language} className="bg-white text-black rounded-lg" onChange={(ev)=>setLanguage(ev.target.value)}>
+                                <option value="c">C</option>
+                                <option value="cpp">C++</option>
+                                <option value="py">Python</option>
+                            </select>
+                        </div>
+                        <div>
+                            <textarea value={code} onChange={(ev)=>setCode(ev.target.value)} className="ml-5 bg-white text-black rounded-lg" rows="25" cols="100"></textarea>
+                        </div>
+                    </form>
+                    <div className="flex flex-row">
+                        <button onClick={handleSubmit} className="border-2 rounded-lg m-2 ml-6 p-2">Submit</button>
+                        {
+                            stat !== '' && (
+                                <div className="ml-4 mt-4">
+                                    Verdict: Your Solution got {stat}!!!
+                                </div>
+                            )
+                        }
+                    </div>
+                </div>
+                <div>
+                    <form>
+                        <div className="mt-6">
+                            <p>Input</p>
+                            <textarea className="bg-white text-black rounded-lg mr-4 mt-2" value={input} onChange={(ev)=>setInput(ev.target.value)} rows="10"></textarea>
+                        </div>
+                        <div className="mt-2">
+                            <p>Output</p>
+                            <textarea
+                                defaultValue={output}
+                                className="bg-white text-black rounded-lg mr-4 mt-2"
+                                rows={10}
+                            />
+                        </div>
+                    </form>
+                    <button onClick={handleRun} className="mt-1 border-2 rounded-lg p-2">Run</button>
+                </div>
+            </div>
+            
+        </div>
+    );
+}
+ChatGPT
+This code defines a React functional component called "SingleProblem," which represents a page for a single problem. It allows users to view the problem statement, submit solutions, and run code to test it against custom input.
+
+Let's go through the code step by step:
+
+Import statements:
+
+The component imports required modules such as React, useState, Link, and useParams from "react-router-dom."
+It also imports various functions from "../services/api" to handle API requests for getting problem details, submitting solutions, checking solution status, and running code.
+The useSelector and useDispatch functions are imported from "react-redux" to access the Redux store and dispatch actions, respectively.
+The logoutUser action is imported from "../redux/actions" to handle user logout.
+Function Component:
+The code defines a function component called SingleProblem. This component represents a page that displays information about a single problem.
+
+State Variables:
+
+The component uses the useState hook to manage various state variables, including proName, proStat, proConst, diff, uname, writer, language, code, stat, input, and output.
+Fetching Problem Details:
+
+The useParams hook is used to extract the id parameter from the URL to identify the problem to display.
+The useEffect hook is used to fetch the problem details using the GetProb API function when the component mounts.
+The fetched problem details are then used to set the state variables proName, proStat, proConst, diff, and writer.
+Additionally, the VerifyUser API function is used to check if the user is logged in. If not, the user is redirected to the login page.
+Solution Submission and Status Checking:
+
+The component provides a textarea where the user can write their code and select the programming language.
+When the user clicks the "Submit" button, the handleSubmit function is triggered.
+If the user is not logged in, they are redirected to the login page.
+If the user is logged in and has provided the required fields (language, code, and username), the SubmitSol API function is called to submit the solution.
+After submission, the ChkSolStat API function is called repeatedly with a delay to check the solution's status.
+Once the solution's status changes from "pending," the status is displayed on the page.
+Code Execution:
+
+The component provides a textarea where the user can input custom test case input.
+When the user clicks the "Run" button, the handleRun function is triggered.
+The PostCodeForRun API function is used to run the user's code with the provided input, and the output is displayed in the output textarea.
+JSX and Rendering:
+
+The component returns JSX code to display the problem details, solution submission, and code execution sections.
+The problem details are displayed in the left section, and the solution submission and code execution sections are displayed in the right section.
+Styling:
+
+The components and their elements are styled using CSS classes to set their appearance, spacing, and color scheme.
+In summary, this code creates a page that displays information about a single problem. Users can view the problem statement, submit solutions, and run their code with custom input. The component handles API requests for problem details, solution submission, and code execution. If the user is not logged in, they are redirected to the login page. The page also displays the status of the solution submission after it's submitted.
+
+
+
+
+
+User
+import { createSlice } from '@reduxjs/toolkit'
+export const userSlice = createSlice({
+  name: 'user',
+  initialState: {
+    token:"",
+    search:"",
+  },
+  reducers: {
+    loginUser:(state,val)=>{
+      state.token = val.payload.token;
+      localStorage.setItem('token',JSON.stringify(val.payload.token));
+    },
+    logoutUser:(state)=>{
+      state.token = "";
+      localStorage.removeItem("token");
+    },
+    checkIfTokenExists:(state)=>{
+      let a = localStorage.getItem('token');
+      if(a){
+        state.token = a.replace(/"|'/g, '');
+      }
+      else{
+        state.token = "";
+      }
+    },
+    changeSearch:(state,val)=>{
+      state.search = val.payload;
+    },
+  },
+})
+
+// Action creators are generated for each case reducer function
+export const { loginUser, logoutUser, checkIfTokenExists, changeSearch } = userSlice.actions
+
+export default userSlice.reducer
+ChatGPT
+This code defines a Redux slice using the @reduxjs/toolkit library. The slice is called userSlice and contains reducers for managing the user-related state, including the user's token and search query.
+
+Here's a breakdown of the code:
+
+Import Statement:
+
+The createSlice function is imported from @reduxjs/toolkit to create a new Redux slice.
+Create Slice:
+
+The createSlice function is used to create the userSlice.
+The name property is set to 'user', which will be used as the name of the slice in the Redux store.
+The initialState object defines the initial state of the user slice. It contains two properties: token and search.
+The reducers property is an object that contains the reducer functions for handling state updates. These reducers are automatically generated based on the key-value pairs in this object.
+Reducer Functions:
+
+The loginUser reducer sets the token state to the value passed in the action payload and also stores the token in the local storage using localStorage.setItem.
+The logoutUser reducer resets the token state to an empty string and removes the token from local storage using localStorage.removeItem.
+The checkIfTokenExists reducer checks if the token exists in local storage. If it does, it sets the token state to the stored value; otherwise, it sets the token state to an empty string.
+The changeSearch reducer updates the search state to the value passed in the action payload.
+Action Creators:
+
+Action creators are automatically generated for each reducer function defined in the reducers object.
+Export:
+
+The individual action creators (loginUser, logoutUser, checkIfTokenExists, and changeSearch) are exported from the file, so they can be used to dispatch actions to update the Redux store.
+The userSlice.reducer is also exported, representing the reducer function for the user slice.
+In summary, this code creates a Redux slice for managing user-related state in the application. The slice includes reducers to handle user login, logout, search query changes, and checking for the existence of a user token in local storage. These reducers are automatically generated by the createSlice function from @reduxjs/toolkit.
+
+
+
+
+
+User
+import { configureStore } from '@reduxjs/toolkit'
+import user from "./actions"
+export default configureStore({
+  reducer: {user},
+})
+ChatGPT
+The provided code is for configuring the Redux store using @reduxjs/toolkit. The store is configured with the user reducer created previously.
+
+Here's a breakdown of the code:
+
+Import Statement:
+
+The configureStore function is imported from @reduxjs/toolkit to create the Redux store.
+Configure Store:
+
+The configureStore function is called to create the Redux store.
+The reducer property is an object that defines the reducers for the store. In this case, there is a single reducer named user, which was created using the userSlice from the previous code. The user reducer manages the user-related state.
+Export:
+
+The configured store is exported from the file using export default.
+In summary, this code sets up the Redux store with a single reducer named user, which handles user-related state using the userSlice created previously. This configured store can be used in the application to manage the user's token and search query data with ease.
+
+
+
+
+
+User
+import axios from 'axios'
+ const API_URI = "http://127.0.0.1:8000";
+export const Register = async (data) => {
+    try {
+        const response = await axios.post(`${API_URI}/signup`,data,{ withCredentials: true });
+        return response.data;
+    } catch (error) {
+        console.log('Error while registering user', error.message);
+    }
+}
+
+export const Login = async (data) => {
+    try {
+        const response = await axios.post(`${API_URI}/login`,data,{ withCredentials: true });
+        return response.data;
+    } catch (error) {
+        console.log('Error while login', error.message);
+    }
+}
+
+export const VerifyUser = async (data) => {
+    try {
+        const response = await axios.post(`${API_URI}`,data,{ withCredentials: true });
+        return response.data;
+    } catch (error) {
+        console.log('Error while getting user data', error.message);
+    }
+}
+
+export const UploadFile = async (data) => {
+    try {
+        const response = await axios.post(`${API_URI}/upload`,data,{ withCredentials: true });
+        return response.data;
+    } catch (error) {
+        console.log('Error while getting user data', error.message);
+    }
+}
+
+export const GetProbList = async () => {
+    try {
+        const response = await axios.get(`${API_URI}/allproblems`);
+        return response.data;
+    } catch (error) {
+        console.log('Error while getting problem list', error.message);
+    }
+}
+
+export const GetProb = async (id) => {
+    try {
+        const response = await axios.get(`${API_URI}/singleproblem/${id}`);
+        return response.data;
+    } catch (error) {
+        console.log('Error while getting problem', error.message);
+    }
+}
+
+export const GetProSol = async (id) => {
+    try {
+        const response = await axios.get(`${API_URI}/allsolproblem/${id}`);
+        return response.data;
+    } catch (error) {
+        console.log('Error while getting solution list', error.message);
+    }
+}
+
+export const GetUserSol = async (id) => {
+    try {
+        const response = await axios.get(`${API_URI}/allsoluser/${id}`);
+        return response.data;
+    } catch (error) {
+        console.log('Error while getting solution list', error.message);
+    }
+}
+
+export const AddProblem = async (data) => {
+    try {
+        const response = await axios.post(`${API_URI}/addproblem`,data,{ withCredentials: true });
+        return response.data;
+    } catch (error) {
+        console.log('Error while adding problem', error.message);
+    }
+}
+
+export const SubmitSol = async (data) => {
+    try {
+        const response = await axios.post(`${API_URI}/submit`,data,{ withCredentials: true });
+        return response.data;
+    } catch (error) {
+        console.log('Error while submiting solution', error.message);
+    }
+}
+
+export const ChkSolStat = async (id) => {
+    try {
+        const response = await axios.get(`${API_URI}/mysolstat/${id}`);
+        return response.data;
+    } catch (error) {
+        console.log('Error while getting status', error.message);
+    }
+}
+
+export const PostCodeForRun = async (data) => {
+    try {
+        const response = await axios.post(`${API_URI}/run`,data);
+        return response.data;
+    } catch (error) {
+        console.log('Error while running code', error.message);
+    }
+}
+
+export const GetUserProb = async (id) => {
+    try {
+        const response = await axios.get(`${API_URI}/allprobuser/${id}`);
+        return response.data;
+    } catch (error) {
+        console.log('Error while getting problem list', error.message);
+    }
+}
+
+export const DeleteProblem = async (id) => {
+    try {
+        await axios.delete(`${API_URI}/deleteproblem/${id}`);
+    } catch (error) {
+        console.log('Error while deleting problem', error.message);
+    }
+}
+
+export const DeleteTestcase = async (id) => {
+    try {
+        await axios.delete(`${API_URI}/deletetestcase/${id}`);
+    } catch (error) {
+        console.log('Error while deleting testcases', error.message);
+    }
+}
+
+export const DeleteSolution = async (id) => {
+    try {
+        await axios.delete(`${API_URI}/deletesolutions/${id}`);
+    } catch (error) {
+        console.log('Error while deleting solutions', error.message);
+    }
+}
+ChatGPT
+The provided code includes a set of functions that utilize Axios to interact with a server's API. These functions handle various tasks such as user authentication, retrieving data, submitting solutions, and deleting data.
+
+Here's a summary of the functions and their respective tasks:
+
+Register(data): Sends a POST request to register a new user.
+
+Login(data): Sends a POST request to authenticate and log in a user.
+
+VerifyUser(data): Sends a POST request to verify the user's credentials.
+
+UploadFile(data): Sends a POST request to upload a file.
+
+GetProbList(): Sends a GET request to retrieve a list of all problems.
+
+GetProb(id): Sends a GET request to retrieve details of a single problem based on the provided ID.
+
+GetProSol(id): Sends a GET request to retrieve solutions associated with a specific problem ID.
+
+GetUserSol(id): Sends a GET request to retrieve solutions submitted by a specific user.
+
+AddProblem(data): Sends a POST request to add a new problem.
+
+SubmitSol(data): Sends a POST request to submit a solution for a problem.
+
+ChkSolStat(id): Sends a GET request to check the status of a solution based on the provided ID.
+
+PostCodeForRun(data): Sends a POST request to run code with specific input.
+
+GetUserProb(id): Sends a GET request to retrieve problems associated with a specific user ID.
+
+DeleteProblem(id): Sends a DELETE request to delete a problem based on the provided ID.
+
+DeleteTestcase(id): Sends a DELETE request to delete test cases associated with a specific problem ID.
+
+DeleteSolution(id): Sends a DELETE request to delete solutions associated with a specific problem ID.
+
+These functions are designed to interact with the backend server, allowing the front-end application to perform various tasks like user authentication, retrieving problem data, submitting solutions, and managing user-related data.
+
+
+
+
+
+User
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import { BrowserRouter } from 'react-router-dom';
+import store from './redux/store'
+import { Provider } from 'react-redux'
+
+import 'react-toastify/dist/ReactToastify.css';
+
+const root = ReactDOM.createRoot(document.getElementById('root'));
+root.render(
+  // <React.StrictMode>
+    <BrowserRouter>
+      <Provider store={store}>
+        <App />
+      </Provider>
+    </BrowserRouter>
+  // </React.StrictMode>
+);
+ChatGPT
+The provided code is the entry point of a React application, where the root component (App) is rendered inside the Provider of the Redux store and wrapped with the BrowserRouter.
+
+Here's a breakdown of the code:
+
+ReactDOM.createRoot: This method is used to create a new root entry point for the React application. It is recommended to use createRoot instead of ReactDOM.render for Concurrent Mode, which is designed to improve the performance of React applications.
+
+document.getElementById('root'): This retrieves the HTML element with the ID "root" from the HTML document. It is the container where the React application will be rendered.
+
+BrowserRouter: This component from react-router-dom provides the routing functionality for the application. It allows navigation between different views/components based on the URL path.
+
+Provider: This component is from react-redux and is used to provide the Redux store to the entire application. The store prop is passed to it, which contains the state of the application.
+
+<App />: This is the root component of the application, representing the entire application's structure. It is rendered inside the Provider, which ensures that the Redux store is available to all components in the application.
+
+<React.StrictMode>: This is commented out in the code. <React.StrictMode> is a wrapper component used to highlight potential problems in the application during development. It should be used to catch potential issues and to make the application more robust.
+
+import 'react-toastify/dist/ReactToastify.css';: This line imports the CSS file for the react-toastify library, which is used for displaying notifications/toasts in the application.
+
+Overall, the provided code sets up the essential components needed for a React application with Redux and React Router. It creates the Redux store, initializes the root component (App), and wraps it with the necessary providers to handle state management and routing.
+
+
+
+
