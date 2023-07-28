@@ -8,12 +8,6 @@ const bodyParser = require('body-parser');
 const { DBConnection } = require('./database/db');
 const PORT = 8000;
 
-DBConnection();
-
-app.listen(PORT, () => {
-  console.log(`Server is listening on port ${PORT}`);
-});
-
 app.use(
   cors({
     credentials: true,
@@ -21,6 +15,15 @@ app.use(
     methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
+
+
+DBConnection();
+
+app.listen(PORT, () => {
+  console.log(`Server is listening on port ${PORT}`);
+});
+
+
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
